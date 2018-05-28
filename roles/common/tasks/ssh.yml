@@ -1,0 +1,22 @@
+---
+- name: ssh directory
+  file:
+    path: ~/.ssh
+    state: directory
+    mode: 0700
+
+- name: ssh config
+  copy:
+    src: config
+    dest: ~/.ssh/config
+    mode: 0600
+
+- name: github ssh key
+  shell: ssh-keygen -b 2048 -t rsa -f ~/.ssh/github_id_rsa -q -N ""
+  args:
+    creates: ~/.ssh/github_id_rsa
+
+- name: gitlab ssh key
+  shell: ssh-keygen -b 2048 -t rsa -f ~/.ssh/gitlab_id_rsa -q -N ""
+  args:
+    creates: ~/.ssh/gitlab_id_rsa

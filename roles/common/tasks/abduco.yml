@@ -1,0 +1,30 @@
+---
+- name: Check for abduco
+  stat:
+    path: /usr/local/bin/abduco
+  register: abduco
+
+- name: download abduco
+  get_url:
+    url: http://www.brain-dump.org/projects/abduco/abduco-0.6.tar.gz 
+    dest: /tmp/abduco-0.6.tar.gz
+  when: abduco.stat.exists == False
+
+- name: extract abduco
+  unarchive:
+    src: /tmp/abduco-0.6.tar.gz
+    dest: /tmp
+    creates: /tmp/abduco-0.6
+  when: abduco.stat.exists == False
+
+- name: build abduco
+  make: 
+    chdir: /tmp/abduco-0.6
+  when: abduco.stat.exists == False
+
+- name: install abduco
+  become: yes
+  make: 
+    target: install
+    chdir: /tmp/abduco-0.6
+  when: abduco.stat.exists == False

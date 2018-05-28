@@ -1,0 +1,9 @@
+---
+  - include: neovim.yml
+  - include: zsh.yml
+  - include: java.yml
+  - include: clojure.yml
+  - include: build-essential.yml
+  - include: ssh.yml
+  - include: abduco.yml
+  - include: git.yml

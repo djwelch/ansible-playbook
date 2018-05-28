@@ -1,0 +1,33 @@
+---
+- name: Install zsh
+  become: yes
+  package:
+    name: zsh
+    state: present
+
+- name: Install antigen
+  become: yes
+  git:
+    repo: https://github.com/zsh-users/antigen.git
+    dest: /opt/antigen
+
+- name: Install dircolors
+  become: yes
+  git:
+    repo: https://github.com/seebi/dircolors-solarized
+    dest: /opt/dircolors-solarized
+    
+- name: Install pure
+  become: yes
+  git:
+    repo: https://github.com/sindresorhus/pure.git 
+    dest: /opt/pure
+
+- name: Configure
+  template:
+    src: dot.zshrc.j2
+    dest: ~/.zshrc
+
+- name: Switch shells
+  become: yes
+  user: name={{ansible_user_id}} shell=/bin/zsh

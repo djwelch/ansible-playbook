@@ -1,0 +1,19 @@
+eval `dircolors /opt/dircolors-solarized/dircolors.256dark`
+source /opt/antigen/antigen.zsh
+PURE_PROMPT_SYMBOL='🦄'
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
+antigen bundle zsh-users/zsh-history-substring-search
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen apply
+
+alias ls="ls --color"
+alias vim="nvim"
+alias vi="nvim"
+alias oldvim="vim"
+alias vimdiff='nvim -d'
+export EDITOR=nvim
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1

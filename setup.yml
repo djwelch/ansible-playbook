@@ -1,0 +1,5 @@
+- name: local machine
+  hosts: local
+  connection: local
+  roles:
+    - common

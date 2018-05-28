@@ -1,0 +1,26 @@
+---
+- name: Install rlwrap
+  become: yes
+  package:
+    name: rlwrap
+    state: present
+
+- name: Check for clojure
+  stat:
+    path: /usr/local/bin/clojure
+  register: clojure
+
+- name: download clojure script script.sh file to tmp dir
+  get_url:
+    url: https://download.clojure.org/install/linux-install-1.9.0.381.sh
+    dest: /tmp/linux-install-1.9.0.381.sh
+    mode: 0755
+  when: clojure.stat.exists == False
+
+- name: execute script.sh script
+  become: yes
+  shell: /tmp/linux-install-1.9.0.381.sh
+  args:
+    chdir: /tmp/
+    creates: /usr/local/bin/clojure
+  when: clojure.stat.exists == False

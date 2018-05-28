@@ -1,0 +1,7 @@
+---
+- name: Install build-essential
+  become: yes
+  package:
+    name: build-essential
+    state: present
+

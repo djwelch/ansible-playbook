@@ -1,10 +1,57 @@
 set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+set number
+set undofile undodir="~/.local/share/nvim/undo"
+set splitbelow splitright
+
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
+
+let mapleader="\<SPACE>"
 
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'eraserhd/parinfer-rust'
 
 call plug#end()
 
 let g:ctrlp_map = '<C-p>' 
 let g:ctrlp_cmd = 'CtrlP'
+
+tnoremap <Esc> <C-\><C-n>
+
+function! FirstTermOfTabJobId()
+    let t_id = nvim_get_current_tabpage()
+    for w_id in nvim_tabpage_list_wins(t_id)
+        let b_id = nvim_win_get_buf(w_id)
+        if nvim_buf_get_option(b_id, 'buftype') == 'terminal'
+            return nvim_buf_get_var(b_id, 'terminal_job_id')
+        endif
+    endfor
+endfunction
+
+function! REPLSendSafe()
+    " Hack to get character under the cursor.
+    norm "ayl
+    if index(["(", ")", "[", "]", "{", "}"], @a) >= 0
+        " Hack to get text using % motion.
+        norm v%"ay
+        call REPLSend(@a)
+    endif
+endfunction
+
+function! REPLSend(cmd)
+    call jobsend(FirstTermOfTabJobId(), a:cmd."\n")
+endfunction
+
+" If no visual selection, send safely
+nnoremap <leader>ef :call REPLSendSafe()<cr>
+" If there's a visual selection, just send it
+vnoremap <leader>ef "ay:call REPLSend(@a)<cr>
+" Send the entire buffer
+nnoremap <leader>eb :call REPLSend("(load-file \"".expand('%:p')."\")")<cr>
+" Get docs
+nnoremap <leader>doc :call REPLSend("(clojure.repl/doc ".expand("<cword>").")")<cr>
+

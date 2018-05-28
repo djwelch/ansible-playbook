@@ -7,3 +7,4 @@
   - include: ssh.yml
   - include: abduco.yml
   - include: git.yml
+  - include: rust.yml

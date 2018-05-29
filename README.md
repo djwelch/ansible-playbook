@@ -28,6 +28,13 @@ ansible-vault encrypt <filename> --vault-password-file ~/.ansible_vault_password
 ansible-playbook setup.yml -i HOSTS -K --vault-password-file ~/.ansible_vault_password
 ```
 
+## After running
+
+Need to sort this stuff out:
+ - have to install the vim plugins.
+ - vim-parinfer needs compilation.
+ - the java ca certs thing still fails unless you run the playbook twice?
+
 ## License
 
 MIT © David Welch

@@ -46,6 +46,9 @@ function! REPLSend(cmd)
     call jobsend(FirstTermOfTabJobId(), a:cmd."\n")
 endfunction
 
+nnoremap <leader>tc :vs term://clj -C:dev -R:clj --repl
+nnoremap <leader>ts :vs term://clj -C:dev -R:cljs --main cljs.main --watch src --compile sam.core --repl
+
 " If no visual selection, send safely
 nnoremap <leader>ef :call REPLSendSafe()<cr>
 " If there's a visual selection, just send it

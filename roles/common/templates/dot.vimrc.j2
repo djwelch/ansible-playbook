@@ -1,4 +1,8 @@
-set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
+set smarttab
 set autoindent  
 set smartindent  
 set nowrap
@@ -15,15 +19,23 @@ let mapleader="\<SPACE>"
 
 call plug#begin('~/.local/share/nvim/plugged')
 
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'eraserhd/parinfer-rust'
-Plug 'sheerun/vim-polyglot'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Quramy/tsuquyomi'
-Plug 'hkupty/iron.nvim'
+Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
+Plug 'clojure-vim/async-clj-omni'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
+
+colorscheme deus
+
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
 nnoremap <C-p> :FZF!<cr>
 tnoremap <Esc> <C-\><C-n>

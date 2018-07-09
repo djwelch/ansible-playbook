@@ -1,0 +1,6 @@
+---
+- name: Install python venv
+  become: yes
+  package:
+    name: python3-venv
+    state: present

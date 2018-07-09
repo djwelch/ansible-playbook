@@ -1,5 +1,5 @@
 ---
-- name: download clojure script script.sh file to tmp dir
+- name: download nvm script
   get_url:
     url: https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh
     dest: /tmp/nvm-install.sh
@@ -10,4 +10,9 @@
   args:
     chdir: /tmp/
     creates: ~/.nvm
+
+- name: execute script.sh script
+  npm:
+    name: neovim
+    global: yes
 

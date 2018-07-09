@@ -4,8 +4,21 @@
   package:
     name: python3-venv
     state: present
+
 - name: Install python pip
   become: yes
   package:
     name: python3-pip
     state: present
+
+- name: execute script.sh script
+  shell: /tmp/nvm-install.sh
+  args:
+    chdir: /tmp/
+    creates: ~/.nvm
+
+- name: Install neovim python
+  pip:
+    name: neovim
+    extra_args: --user
+    executable: pip3

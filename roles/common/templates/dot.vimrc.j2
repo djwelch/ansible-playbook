@@ -12,49 +12,52 @@ let mapleader="\<SPACE>"
 
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'eraserhd/parinfer-rust'
+Plug 'sheerun/vim-polyglot'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Quramy/tsuquyomi'
+Plug 'hkupty/iron.nvim'
 
 call plug#end()
 
-let g:ctrlp_map = '<C-p>' 
-let g:ctrlp_cmd = 'CtrlP'
-
+nnoremap <C-p> :FZF!<cr>
 tnoremap <Esc> <C-\><C-n>
 
-function! FirstTermOfTabJobId()
-    let t_id = nvim_get_current_tabpage()
-    for w_id in nvim_tabpage_list_wins(t_id)
-        let b_id = nvim_win_get_buf(w_id)
-        if nvim_buf_get_option(b_id, 'buftype') == 'terminal'
-            return nvim_buf_get_var(b_id, 'terminal_job_id')
-        endif
-    endfor
-endfunction
-
-function! REPLSendSafe()
-    " Hack to get character under the cursor.
-    norm "ayl
-    if index(["(", ")", "[", "]", "{", "}"], @a) >= 0
-        " Hack to get text using % motion.
-        norm v%"ay
-        call REPLSend(@a)
-    endif
-endfunction
-
-function! REPLSend(cmd)
-    call jobsend(FirstTermOfTabJobId(), a:cmd."\n")
-endfunction
-
-nnoremap <leader>tc :vs term://clj -C:dev -R:clj --repl
-nnoremap <leader>ts :vs term://clj -C:dev -R:cljs --main cljs.main --watch src --compile sam.core --repl
+"function! FirstTermOfTabJobId()
+"    let t_id = nvim_get_current_tabpage()
+"    for w_id in nvim_tabpage_list_wins(t_id)
+"        let b_id = nvim_win_get_buf(w_id)
+"        if nvim_buf_get_option(b_id, 'buftype') == 'terminal'
+"            return nvim_buf_get_var(b_id, 'terminal_job_id')
+"        endif
+"    endfor
+"endfunction
+"
+"function! REPLSendSafe()
+"    " Hack to get character under the cursor.
+"    norm "ayl
+"    if index(["(", ")", "[", "]", "{", "}"], @a) >= 0
+"        " Hack to get text using % motion.
+"        norm v%"ay
+"        call REPLSend(@a)
+"    endif
+"endfunction
+"
+"function! REPLSend(cmd)
+"    call jobsend(FirstTermOfTabJobId(), a:cmd."\n")
+"endfunction
+"
+"nnoremap <leader>tc :vs term://clj -C:dev -R:clj --repl
+"nnoremap <leader>ts :vs term://clj -C:dev -R:cljs --main cljs.main --watch src --compile sam.core --repl
 
 " If no visual selection, send safely
-nnoremap <leader>ef :call REPLSendSafe()<cr>
+"nnoremap <leader>ef :call REPLSendSafe()<cr>
 " If there's a visual selection, just send it
-vnoremap <leader>ef "ay:call REPLSend(@a)<cr>
+"vnoremap <leader>ef "ay:call REPLSend(@a)<cr>
 " Send the entire buffer
-nnoremap <leader>eb :call REPLSend("(load-file \"".expand('%:p')."\")")<cr>
+"nnoremap <leader>eb :call REPLSend("(load-file \"".expand('%:p')."\")")<cr>
 " Get docs
-nnoremap <leader>doc :call REPLSend("(clojure.repl/doc ".expand("<cword>").")")<cr>
+"nnoremap <leader>doc :call REPLSend("(clojure.repl/doc ".expand("<cword>").")")<cr>
 

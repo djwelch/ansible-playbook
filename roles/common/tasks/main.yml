@@ -8,3 +8,4 @@
   - include: abduco.yml
   - include: git.yml
   - include: rust.yml
+  - include: nvm.yml

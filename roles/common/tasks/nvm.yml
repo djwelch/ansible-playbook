@@ -1,0 +1,13 @@
+---
+- name: download clojure script script.sh file to tmp dir
+  get_url:
+    url: https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh
+    dest: /tmp/nvm-install.sh
+    mode: 0755
+
+- name: execute script.sh script
+  shell: /tmp/nvm-install.sh
+  args:
+    chdir: /tmp/
+    creates: ~/.nvm
+

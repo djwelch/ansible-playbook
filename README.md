@@ -34,6 +34,8 @@ Need to sort this stuff out:
  - have to install the vim plugins.
  - vim-parinfer needs compilation.
  - the java ca certs thing still fails unless you run the playbook twice?
+ - install fzf by running `~/.fzf/install`.
+ - install npm by running `nvm install --stable`.
 
 ## License
 

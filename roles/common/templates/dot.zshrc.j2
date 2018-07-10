@@ -13,7 +13,16 @@ alias oldvim="vim"
 alias vimdiff='nvim -d'
 export EDITOR=nvim
 
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=5000
+setopt appendhistory
+setopt sharehistory
+setopt incappendhistory
+
 source ~/.cargo/env
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

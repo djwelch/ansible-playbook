@@ -22,3 +22,9 @@
     name: neovim
     extra_args: --user
     executable: pip3
+
+- name: Install jedi
+  pip:
+    name: jedi
+    extra_args: --user
+    executable: pip3

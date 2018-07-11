@@ -22,13 +22,20 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'eraserhd/parinfer-rust'
-Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
-Plug 'zchee/deoplete-jedi'
-Plug 'clojure-vim/async-clj-omni'
+Plug 'tomtom/tcomment_vim'
+
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+Plug 'mhartington/nvim-typescript', { 'for': 'typescript', 'do': './install.sh' }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+
+Plug 'zchee/deoplete-jedi', { 'for': ['python', 'python3'] }
+
+Plug 'eraserhd/parinfer-rust', { 'for': 'clojure' }
+Plug 'clojure-vim/async-clj-omni', { 'for': 'clojure' }
+
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'clojure-vim/acid.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
@@ -37,6 +44,10 @@ colorscheme deus
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 nnoremap <C-p> :FZF!<cr>
 tnoremap <Esc> <C-\><C-n>

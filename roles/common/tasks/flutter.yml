@@ -12,3 +12,48 @@
     remote_src: yes
     creates: ~/flutter/bin
     extra_opts: [--strip-components=1]
+
+- name: Install android sdk
+  become: yes
+  package:
+    name: android-sdk
+    state: present
+
+- name: Install android tools
+  become: yes
+  unarchive:
+    src: https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+    dest: /usr/lib/android-sdk
+    remote_src: yes
+    creates: /usr/lib/android-sdk/tools/bin/sdkmanager
+
+- name: Set permissions
+  become: yes
+  file:
+    path: /usr/lib/android-sdk/tools/bin/{{ item }}
+    mode: 0755
+  with_items:
+    - apkanalyzer
+    - archquery
+    - avdmanager
+    - jobb
+    - lint
+    - monkeyrunner
+    - screenshot2
+    - sdkmanager
+    - uiautomatorviewer
+
+- name: Set permissions
+  become: yes
+  file:
+    path: /usr/lib/android-sdk/tools/{{ item }}
+    mode: 0755
+  with_items:
+    - android
+    - draw9patch
+    - emulator
+    - emulator-check
+    - monitor
+    - mksdcard
+    - screenshot2
+

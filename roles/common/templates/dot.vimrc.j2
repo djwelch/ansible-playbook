@@ -42,6 +42,10 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'hkupty/iron.nvim'
 
+" flutter run --pid-file /tmp/flutter.pid
+Plug 'reisub0/hot-reload.vim'
+Plug 'dart-lang/dart-vim-plugin'
+
 call plug#end()
 
 colorscheme deus
@@ -58,6 +62,9 @@ imap <expr><CR> pumvisible() ? deoplete#mappings#close_popup() : "\<CR>\<Plug>Au
 
 nnoremap <C-p> :FZF!<cr>
 tnoremap <Esc> <C-\><C-n>
+
+let dart_format_on_save = 1
+let dart_style_guide = 2
 
 "function! FirstTermOfTabJobId()
 "    let t_id = nvim_get_current_tabpage()

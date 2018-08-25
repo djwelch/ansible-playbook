@@ -10,3 +10,4 @@
   - include: rust.yml
   - include: nvm.yml
   - include: python.yml
+  - include: flutter.yml

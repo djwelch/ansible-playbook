@@ -1,0 +1,14 @@
+---
+- name: Create flutter directory
+  file:
+    path: ~/flutter
+    state: directory
+    mode: 0775
+
+- name: Install flutter
+  unarchive:
+    src: https://storage.googleapis.com/flutter_infra/releases/beta/linux/flutter_linux_v0.5.1-beta.tar.xz
+    dest: ~/flutter
+    remote_src: yes
+    creates: ~/flutter/bin
+    extra_opts: [--strip-components=1]

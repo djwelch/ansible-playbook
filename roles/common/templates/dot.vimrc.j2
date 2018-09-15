@@ -24,9 +24,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'prabirshrestha/asyncomplete-neosnippet.vim'
+" Plug 'ervandew/supertab'
 Plug 'SirVer/Ultisnips'
 Plug 'natebosch/dartlang-snippets'
-Plug 'augustomelo/vim-lsp', {'branch': 'feature-code-action'}
 Plug 'thaerkh/vim-workspace'
 Plug 'tpope/vim-fugitive'
 Plug 'rafi/awesome-vim-colorschemes'
@@ -35,7 +35,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
@@ -44,12 +44,10 @@ call plug#end()
 " Plug 'reisub0/hot-reload.vim'
 colorscheme deus
  
- 
 let mapleader="\<SPACE>"
  
 nnoremap <C-p> :FZF!<cr>
 tnoremap <Esc> <C-\><C-n>
- 
  
 if executable('dart_language_server')
   au User lsp_setup call lsp#register_server({
@@ -60,7 +58,6 @@ if executable('dart_language_server')
 endif
 
 if has('python3')
-    let g:UltiSnipsExpandTrigger="<Tab>"
     call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
         \ 'name': 'ultisnips',
         \ 'whitelist': ['*'],
@@ -69,7 +66,6 @@ if has('python3')
 endif 
  
 let dart_format_on_save = 1
- 
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_signs_error = {'text': 'X'}
@@ -84,31 +80,43 @@ nmap <silent> <leader>lh :LspHover<cr>
 nmap <silent> <leader>cp :pclose<cr>
 nmap <silent> <leader>cc :cclose<cr>
  
-:command Rm call delete(expand('%')) | bdelete!
+:command! Rm call delete(expand('%')) | bdelete!
  
 let g:workspace_persist_undo_history = 0
- 
 set undofile undodir="~/.local/share/nvim/undo"
+
+set completeopt+=preview
+let g:asyncomplete_auto_popup = 0
+
+imap <c-space> <Plug>(asyncomplete_force_refresh)
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-let g:asyncomplete_auto_popup = 0
- 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
- 
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
- 
-let s:expansion_active = 0
+
+let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+augroup WincentAutocomplete
+  autocmd!
+  autocmd! User UltiSnipsEnterFirstSnippet
+  autocmd! User UltiSnipsExitLastSnippet
+  autocmd User UltiSnipsEnterFirstSnippet call Setup_mappings()
+  autocmd User UltiSnipsExitLastSnippet call Teardown_mappings()
+augroup END
+
+let b:did_after_plugin_ultisnips_after=1
+
+execute 'inoremap <silent> ' . g:UltiSnipsExpandTrigger .
+      \ ' <C-R>=Expand_or_jump("N")<CR>'
+execute 'snoremap <silent> ' . g:UltiSnipsExpandTrigger .
+      \ ' <Esc>:call Expand_or_jump("N")<CR>'
+execute 'inoremap <silent> ' . g:UltiSnipsJumpBackwardTrigger .
+      \ ' <C-R>=Expand_or_jump("P")<CR>'
+execute 'snoremap <silent> ' . g:UltiSnipsJumpBackwardTrigger .
+      \ ' <Esc>:call Expand_or_jump("P")<CR>'
+
+let s:expansion_active = 0
 
 function! Setup_mappings() abort
   " Overwrite the mappings that UltiSnips sets up during expansion.
@@ -140,7 +148,10 @@ let g:ulti_jump_forwards_res = 0
 let g:ulti_expand_res = 0
 
 function! Expand_or_jump(direction) abort
-  call UltiSnips#ExpandSnippet()
+  
+  if !pumvisible()
+    call UltiSnips#ExpandSnippet()
+  endif
   if g:ulti_expand_res == 0
     " No expansion occurred.
     if pumvisible()
@@ -174,11 +185,5 @@ function! Expand_or_jump(direction) abort
   return ''
 endfunction
 
-augroup WincentAutocomplete
-  autocmd!
-  autocmd! User UltiSnipsEnterFirstSnippet
-  autocmd User UltiSnipsEnterFirstSnippet call Setup_mappings()
-  autocmd! User UltiSnipsExitLastSnippet
-  autocmd User UltiSnipsExitLastSnippet call Teardown_mappings()
-augroup END
-
+unmap <C-N>
+unmap <C-P>
